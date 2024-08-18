@@ -4,7 +4,7 @@ import PublicRoutes from "../routes/PublicRoutes";
 
 const AppRouter = () => {
   // authentication process
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   return (
     <BrowserRouter>
       {
