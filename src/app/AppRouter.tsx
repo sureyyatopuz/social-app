@@ -4,14 +4,17 @@ import PublicRoutes from "../routes/PublicRoutes";
 
 const AppRouter = () => {
   // authentication process
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return (
     <BrowserRouter>
-      {
-        isLoggedIn
-          ? <ProtectedRoutes />
-          : <PublicRoutes />
-      }
+      <div className="min-h-screen bg-gray-100">
+        {
+          isLoggedIn
+            ? <ProtectedRoutes />
+            : <PublicRoutes />
+        }
+      </div>
+
     </BrowserRouter>
   );
 };
