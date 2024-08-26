@@ -50,7 +50,7 @@ const User = () => {
       console.log("Form Data:", formData);
 
       const filteredData = Object.fromEntries(
-        Object.entries(formData).filter(([_, value]) => value !== undefined)
+        Object.entries(formData).filter((entry) => entry[1] !== undefined)
       );
 
       await addDoc(collection(db, "posts"), filteredData);
