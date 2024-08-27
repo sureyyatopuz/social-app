@@ -1,15 +1,26 @@
-import { Button, Form, FormProps, Input } from "antd";
+import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 type FieldType = {
   username?: string;
   password?: string;
+  isAdmin: boolean;
   remember?: string;
 };
 
 const Login = () => {
+  const dispatch = useDispatch();
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
+    const user = {
+      ...values,
+    };
+    dispatch(loginUser(user));
+    toast.success("Login Successful");
+
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -46,13 +57,21 @@ const Login = () => {
             <Input.Password />
           </Form.Item>
 
+          <Form.Item<FieldType>
+            name="isAdmin"
+            valuePropName="checked"
+            wrapperCol={{ offset: 8, span: 16 }}
+          >
+            <Checkbox>Is Admin</Checkbox>
+          </Form.Item>
+
           <Form.Item>
             <Button type="primary" htmlType="submit" className="flex w-full">
               Log in
             </Button>
           </Form.Item>
           <div className="flex justify-center">
-            
+
           </div>
           <div className="flex justify-center mt-4">
             <span>Don't have an account? <span className="text-blue-500 cursor-pointer">Sign up</span></span>

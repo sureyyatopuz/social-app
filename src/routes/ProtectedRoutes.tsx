@@ -1,19 +1,24 @@
 import { Route, Routes } from "react-router-dom";
 import Admin from "../resources/views/admin/Admin";
 import User from "../resources/views/user/User";
+import { useSelector } from "react-redux";
 
 const ProtectedRoutes = () => {
-  const isAdmin = false;
+  const { user } = useSelector((state) => state.auth);
+  console.log("user", user)
   return (
     <Routes>
       {
-        isAdmin
-          ? <Route>
+        user.isAdmin
+          ?
+          <>
+            <Route index element={<Admin />} />
             <Route path="/admin" element={<Admin />} />
-          </Route>
-          : <Route>
-            <Route path="/" element={<User />} />
-          </Route>
+          </>
+
+          :
+          <Route path="/" element={<User />} />
+
       }
 
     </Routes>
