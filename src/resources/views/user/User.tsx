@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, Form, Modal } from "antd";
+import { Card, DatePicker, Form, Modal, Space } from "antd";
 import { addDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../../firebaseConfig.ts";
 import { TbLogout, TbSquarePlus } from "react-icons/tb";
 import TextArea from "antd/es/input/TextArea";
 import { BsEmojiSmile } from "react-icons/bs";
-import { GoComment, GoHeart, GoHome } from "react-icons/go";
+import { GoHome } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
 import { MdOutlineExplore } from "react-icons/md";
 import { PiVideoBold } from "react-icons/pi";
@@ -13,6 +13,8 @@ import { CgProfile } from "react-icons/cg";
 import Input from "antd/es/input/Input";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/slices/authSlice.ts";
+import dayjs from "dayjs";
+import PostList from "../../components/PostList.tsx";
 
 type Post = {
   id: string;
@@ -133,63 +135,7 @@ const User = () => {
       </div>
       <div className="flex flex-col items-center min-h-screen w-4/5">
         <div className="mt-20">
-          {posts.map(post => (
-            <Card key={post.id} className="w-[465px] mb-4 border-none shadow-none">
-              <div className="">
-                {/* Header */}
-                <div className="flex items-center mb-4">
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src={post.avatar || "https://via.placeholder.com/150"}
-                    alt="Avatar"
-                  />
-                  <div className="ml-3">
-                    <p className="text-sm font-semibold">{post.userId || "Unknown User"}</p>
-                    <p className="text-xs text-gray-500">{post.time || "1d"}</p>
-                  </div>
-                  <div className="ml-auto">
-                    <span className="font-extrabold">...</span>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <img
-                  className="w-full rounded"
-                  src={post.image || "https://via.placeholder.com/300x200"}
-                  alt="Card image"
-                />
-
-                {/* Footer */}
-                <div className="py-4">
-                  <div className="flex justify-between items-center text-gray-600">
-                    <div className="flex items-center">
-                      <GoHeart className="h-5 w-5 mr-2" />
-                      <span>{post.like || 0} likes</span>
-                    </div>
-                    <div className="flex items-center">
-                      <GoComment className="h-5 w-5 text-gray-500 mr-2" />
-                      <span>{post.commentIds?.length || 0} comments</span>
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <span>{post.description}</span>
-                  </div>
-                  <div className="mt-4">
-                    <span className="text-gray-500 text-xs">
-                      View all {post.comments?.length || 0} comments
-                    </span>
-                  </div>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      className="w-full border-none outline-none text-sm text-gray-700"
-                      placeholder="Add a comment..."
-                    />
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
+         <PostList posts={posts} />
         </div>
       </div>
       <Modal
@@ -212,6 +158,15 @@ const User = () => {
             name="description"
           >
             <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item
+            hidden
+            name="createDate"
+            initialValue={dayjs().format("DD/MM/YYYY")}
+          >
+            <Space >
+              <DatePicker />
+            </Space>
           </Form.Item>
         </Form>
       </Modal>
