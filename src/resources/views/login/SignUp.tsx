@@ -1,7 +1,6 @@
 import { Button, Form, FormProps, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { toast } from "react-toastify";
+import { signUp } from "../../../../firebaseConfig";
 
 type FieldType = {
     email: string;
@@ -10,25 +9,12 @@ type FieldType = {
 
 const SignUp = () => {
 
-    const auth = getAuth();
+    // const auth = getAuth();
 
     const navigate = useNavigate();
 
-    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-
-     createUserWithEmailAndPassword(auth, values.email, values.password)
-            .then((userCredential) => {
-                // Signed up 
-                const user = userCredential.user;
-                toast.success("Registration Successful");
-                navigate("/login")
-                // ...
-            })
-            .catch((error) => {
-                toast.error(error.message);
-                // ..
-            });
-
+    const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+     const user = await signUp(values)
     };
 
     const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
